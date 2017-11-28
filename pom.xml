@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>hu.psprog.leaflet</groupId>
+    <artifactId>leaflet-cli</artifactId>
+    <version>1.0.0</version>
+
+    <parent>
+        <groupId>org.springframework.shell</groupId>
+        <artifactId>spring-shell-parent</artifactId>
+        <version>2.0.0.M2</version>
+    </parent>
+
+    <properties>
+
+        <!-- Java environment version -->
+        <java.version>1.8</java.version>
+
+        <!-- Leaflet internal dependency versions -->
+        <leaflet.jwt-component.version>2.2.1</leaflet.jwt-component.version>
+        <leaflet.backend.version>1.2.0-dev</leaflet.backend.version>
+
+        <!-- dependency versions -->
+        <spring.security.version>4.2.3.RELEASE</spring.security.version>
+        <logback.version>1.2.3</logback.version>
+        <commons.lang.version>3.6</commons.lang.version>
+        <javax.servlet.api.version>3.1.0</javax.servlet.api.version>
+
+        <!-- compiler settings -->
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+
+        <!-- maven settings -->
+        <timestamp>${maven.build.timestamp}</timestamp>
+        <maven.build.timestamp.format>yyyy-MM-dd HH:mm z</maven.build.timestamp.format>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/libs-milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>hu.psprog.leaflet</groupId>
+                <artifactId>leaflet-jwt-component</artifactId>
+                <version>${leaflet.jwt-component.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>hu.psprog.leaflet</groupId>
+                <artifactId>leaflet-service</artifactId>
+                <version>${leaflet.backend.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>hu.psprog.leaflet</groupId>
+                <artifactId>leaflet-persistence</artifactId>
+                <version>${leaflet.backend.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-core</artifactId>
+                <version>${spring.security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${servlet-api.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.shell</groupId>
+            <artifactId>spring-shell-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>hu.psprog.leaflet</groupId>
+            <artifactId>leaflet-jwt-component</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>hu.psprog.leaflet</groupId>
+            <artifactId>leaflet-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>hu.psprog.leaflet</groupId>
+            <artifactId>leaflet-persistence</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <jvmArguments>-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=9995</jvmArguments>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
