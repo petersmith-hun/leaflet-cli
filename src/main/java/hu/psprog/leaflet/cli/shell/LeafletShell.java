@@ -66,7 +66,7 @@ public class LeafletShell {
      *
      * @param service service name (mandatory)
      * @param expiration expiration in hours (optional, defaults to 8760 hours)
-     * @return
+     * @return operation result message
      */
     @ShellMethod(key = "svc-token", value = "Generates a SERVICE user token.")
     public String generateServiceToken(

@@ -28,6 +28,7 @@
         <logback.version>1.2.3</logback.version>
         <commons.lang.version>3.6</commons.lang.version>
         <javax.servlet.api.version>3.1.0</javax.servlet.api.version>
+        <versions-maven-plugin.version>2.5</versions-maven-plugin.version>
 
         <!-- compiler settings -->
         <maven.compiler.source>${java.version}</maven.compiler.source>
@@ -107,6 +108,7 @@
     </dependencies>
 
     <build>
+        <finalName>leaflet-cli</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -121,6 +123,15 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>${versions-maven-plugin.version}</version>
+                <configuration>
+                    <includeProperties>leaflet.backend.version</includeProperties>
+                    <generateBackupPoms>false</generateBackupPoms>
+                </configuration>
             </plugin>
         </plugins>
     </build>
