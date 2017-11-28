@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
+ * Implementation of {@link InitializingService}.
+ *
  * @author Peter Smith
  */
 @Service

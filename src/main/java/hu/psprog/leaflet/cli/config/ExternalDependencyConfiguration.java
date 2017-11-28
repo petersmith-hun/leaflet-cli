@@ -18,6 +18,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
+ * Configuration to build up required Leaflet service and persistence beans.
+ *
  * @author Peter Smith
  */
 @Configuration
