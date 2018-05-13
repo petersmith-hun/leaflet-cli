@@ -40,7 +40,7 @@ public class JWTServiceImpl implements JWTService {
     }
 
     private UserDetails buildUserDetails(String name) {
-        return new ExtendedUserDetails.Builder()
+        return ExtendedUserDetails.getBuilder()
                 .withID(SERVICE_USER_ID)
                 .withUsername(prepareServiceName(name))
                 .withName(name)
