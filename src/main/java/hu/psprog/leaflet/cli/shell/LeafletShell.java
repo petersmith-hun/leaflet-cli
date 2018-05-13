@@ -2,6 +2,7 @@ package hu.psprog.leaflet.cli.shell;
 
 import hu.psprog.leaflet.cli.service.InitializingService;
 import hu.psprog.leaflet.cli.service.JWTService;
+import hu.psprog.leaflet.cli.service.domain.InitResponse;
 import hu.psprog.leaflet.persistence.entity.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.Availability;
@@ -20,6 +21,8 @@ import java.util.Objects;
 @ShellComponent
 public class LeafletShell {
 
+    private static final String INIT_SUCCESS_MESSAGE = "Administrator user initialized with ID [%d]. " +
+            "Initial password is [%s] - please make sure you change this password after your first login.";
     private static final String DEFAULT_USERNAME = "Administrator";
     private static final String DEFAULT_LOCALE = "EN";
     private static final String DEFAULT_EXPIRATION_IN_HOURS = "8760";
@@ -38,7 +41,6 @@ public class LeafletShell {
      *
      * @param username username of the admin user (optional, defaults to 'Administrator')
      * @param email email address (mandatory)
-     * @param password password (mandatory)
      * @param locale default user locale (optional, defaults to 'EN')
      * @return operation result message
      */
@@ -47,13 +49,12 @@ public class LeafletShell {
     public String init(
             @ShellOption(arity = 1, defaultValue = DEFAULT_USERNAME) String username,
             @ShellOption(arity = 1) String email,
-            @ShellOption(arity = 1) String password,
             @ShellOption(arity = 1, defaultValue = DEFAULT_LOCALE) Locale locale) {
 
-        Long userID = initializingService.initializeAdmin(username, email, password, locale);
+        InitResponse initResponse = initializingService.initializeAdmin(username, email, locale);
         String message;
-        if (Objects.nonNull(userID)) {
-            message = "Administrator user initialized with ID = " + userID;
+        if (Objects.nonNull(initResponse.getUserID())) {
+            message = String.format(INIT_SUCCESS_MESSAGE, initResponse.getUserID(), initResponse.getGeneratedPassword());
         } else {
             message = "Failed to initialize administrator user. See stacktrace above for more information.";
         }

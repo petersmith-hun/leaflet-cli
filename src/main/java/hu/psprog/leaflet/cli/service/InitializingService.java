@@ -1,5 +1,6 @@
 package hu.psprog.leaflet.cli.service;
 
+import hu.psprog.leaflet.cli.service.domain.InitResponse;
 import hu.psprog.leaflet.persistence.entity.Locale;
 
 /**
@@ -21,9 +22,8 @@ public interface InitializingService {
      *
      * @param username username
      * @param email email address
-     * @param password password
      * @param language default user locale
-     * @return created user's ID
+     * @return created user's ID and generated password as {@link InitResponse}
      */
-    Long initializeAdmin(String username, String email, String password, Locale language);
+    InitResponse initializeAdmin(String username, String email, Locale language);
 }

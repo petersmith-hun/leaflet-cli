@@ -1,11 +1,13 @@
 package hu.psprog.leaflet.cli.service.impl;
 
 import hu.psprog.leaflet.cli.service.InitializingService;
+import hu.psprog.leaflet.cli.service.domain.InitResponse;
 import hu.psprog.leaflet.persistence.entity.Locale;
 import hu.psprog.leaflet.security.jwt.model.Role;
 import hu.psprog.leaflet.service.UserService;
 import hu.psprog.leaflet.service.exception.ServiceException;
 import hu.psprog.leaflet.service.vo.UserVO;
+import org.apache.commons.text.RandomStringGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,8 @@ public class InitializingServiceImpl implements InitializingService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InitializingServiceImpl.class);
     private static final List<GrantedAuthority> ADMIN_AUTHORITY = AuthorityUtils.createAuthorityList(Role.ADMIN.name());
+    private static final int PASSWORD_LENGTH = 8;
+    private static final char[][] RANDOM_CHARACTER_RANGE = {{'a', 'z'}, {'A', 'Z'}, {'0', '9'}};
 
     private UserService userService;
     private PasswordEncoder passwordEncoder;
@@ -42,16 +46,20 @@ public class InitializingServiceImpl implements InitializingService {
     }
 
     @Override
-    public Long initializeAdmin(String username, String email, String password, Locale language) {
+    public InitResponse initializeAdmin(String username, String email, Locale language) {
 
         Long userID = null;
+        String password = generatePassword();
         try {
             userID = userService.createOne(createAdminUserVO(username, email, password, language));
         } catch (ServiceException e) {
             LOGGER.error("Failed to initialize admin user", e);
         }
 
-        return userID;
+        return InitResponse.getBuilder()
+                .withUserID(userID)
+                .withGeneratedPassword(password)
+                .build();
     }
 
     private UserVO createAdminUserVO(String username, String email, String password, Locale language) {
@@ -63,5 +71,12 @@ public class InitializingServiceImpl implements InitializingService {
                 .withEnabled(true)
                 .withAuthorities(ADMIN_AUTHORITY)
                 .build();
+    }
+
+    private String generatePassword() {
+        return new RandomStringGenerator.Builder()
+                .withinRange(RANDOM_CHARACTER_RANGE)
+                .build()
+                .generate(PASSWORD_LENGTH);
     }
 }
